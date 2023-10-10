@@ -15,8 +15,8 @@ public class Health : MonoBehaviour
     private void Start()
     {
         //변수 초기화
-        curhealth = 4; //현재체력
-        numOfHearts = 4; //최대체력
+        //curhealth = 3; //현재체력
+        //numOfHearts = 3; //최대체력
     }
     private void Update()
     {

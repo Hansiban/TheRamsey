@@ -26,5 +26,4 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(canvas);
     }
-
 }

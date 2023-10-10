@@ -21,6 +21,7 @@ public class PlayerControll : MonoBehaviour
     private Transform bulletSpawnPoint;
     public GameObject bulletPrefab;
     public Cotton cotton;
+    public Trail trail;
 
 
     private void Awake()
@@ -33,6 +34,9 @@ public class PlayerControll : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         healthManager = GetComponent<Health>();
+        trail = GetComponentInChildren<Trail>();
+
+        haveGun = true;
         bulletSpawnPoint = this.transform.Find("CottonSpawn");
         //playerEffect = GetComponentInChildren<PlayerEffect>();
         isGrounded = true;
@@ -63,6 +67,7 @@ public class PlayerControll : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z) && haveGun)
         {
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            //trail.Make();
         }
     }
 
@@ -130,7 +135,6 @@ public class PlayerControll : MonoBehaviour
         {
             isGrounded = true;
             animator.SetBool("isJump", !isGrounded);
-            //playerEffect.LandEffect(isGrounded);
         }
         if (col.gameObject.CompareTag("Enemy"))
         {

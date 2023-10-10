@@ -40,7 +40,6 @@ public class Cotton : MonoBehaviour
             CottonMove();
         }
     }
-
     private void CottonMove()
     {
         this.transform.Translate(Vector3.left * speed * Time.deltaTime);
