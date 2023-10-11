@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8348642354006949225}
   - component: {fileID: 1495715134953869638}
   - component: {fileID: 1170447998}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: boss1_projectile_alt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

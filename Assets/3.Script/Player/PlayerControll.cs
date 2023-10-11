@@ -129,6 +129,12 @@ public class PlayerControll : MonoBehaviour
         }
     }
 
+    public void Damage()
+    {
+        Debug.Log("¶Ñ±î¸ÂÀ½");
+        healthManager.curhealth--;
+    }
+
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Ground") && !isGrounded)
@@ -138,8 +144,7 @@ public class PlayerControll : MonoBehaviour
         }
         if (col.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("¶Ñ±î¸ÂÀ½");
-            healthManager.curhealth--;
+            Damage();
         }
     }
 

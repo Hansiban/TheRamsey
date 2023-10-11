@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/Acorn Village.unity
     guid: 730d6e916200af444ac1ed26970ef7df
+  - enabled: 1
+    path: Assets/1.Scene/Boss.unity
+    guid: e5c82e751749a7f448d23b1acf01a486
   m_configObjects: {}

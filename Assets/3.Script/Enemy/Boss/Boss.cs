@@ -1,15 +1,26 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
+    [Header("Move")]
+    [SerializeField] float speed;
+    [SerializeField] float jumpforce;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private GameObject hitdownpos;
+    [SerializeField] private GameObject hituppos;
+    [SerializeField] private BossPos bosspos;
+    private Rigidbody2D rigid;
+    public int h;
+    private bool isjump;
+
     [Header("HP")]
-    public int hp;
     public Health health;
 
     [Header("Make")]
-    public int minTrans;
-    public int maxTrans;
+    public float minTrans;
+    public float maxTrans;
     public int makeCount;
 
     [Header("brick")]
@@ -17,22 +28,79 @@ public class Boss : MonoBehaviour
 
     [Header("Red")]
     [SerializeField] private GameObject red;
-    private int spawnpoint;
-    private List<int> spawnpoints;
+    private float spawnpoint;
+    private List<float> spawnpoints;
     private Vector2 position;
+
+    [Header("ETC")]
+    [SerializeField] private GameObject warning;
+
 
     public void Awake()
     {
+        rigid = GetComponent<Rigidbody2D>();
         health = GetComponent<Health>();
-        spawnpoints = new List<int>();
-        makeCount = 4;
-        hp = 3;
     }
     public void Start()
     {
-        Stomp();
+        spawnpoints = new List<float>();
+        makeCount = 4;
+        h = 1;
     }
 
+    public void Update()
+    {
+        DrawRay();
+        //if (warning || isjump)
+        //{
+        //    return;
+        //}
+        Move();
+    }
+    private void DrawRay()
+    {
+        RaycastHit2D hitup = Physics2D.Raycast(hituppos.transform.position, Vector2.up, 0.5f, layerMask);
+        RaycastHit2D hitdown = Physics2D.Raycast(hitdownpos.transform.position, Vector2.down, 0.5f, layerMask);
+
+        Debug.DrawRay(hituppos.transform.position, Vector2.up, Color.red, 0.5f);
+        Debug.DrawRay(hitdownpos.transform.position, Vector2.down, Color.blue, 0.5f);
+
+        if (hitup)
+        {
+            Debug.Log("충돌up");
+            hitup.collider.isTrigger = true;
+        }
+
+        if (hitdown)
+        {
+            Debug.Log("충돌down");
+            hitdown.collider.isTrigger = false;
+        }
+    }
+    private void Move()
+    {
+        Vector2 currentVelocity = rigid.velocity;
+
+        switch (h)
+        {
+            case 0: // 가만히있기
+                currentVelocity.x = 0;
+                break;
+            case 1: // 오른쪽
+                currentVelocity.x = speed; // 현재 속도에 speed를 더합니다.
+                break;
+            case 2: // 왼쪽
+                currentVelocity.x = -speed; // 현재 속도에서 speed를 뺍니다.
+                break;
+        }
+        rigid.velocity = currentVelocity;
+    }
+    public void Jump()
+    {
+        Debug.Log("Jump");
+        rigid.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
+        Invoke("Stomp", 3f);
+    }
     public void Stomp()
     {
         for (int i = 0; i < makeCount; i++)
@@ -41,24 +109,23 @@ public class Boss : MonoBehaviour
         }
         Invoke("Makebrick", 1.5f);
     }
-
     public void Makebrick()
     {
         for (int i = 0; i < makeCount; i++)
         {
             GameObject obj;
-            if (i == makeCount-1)
+            if (i == makeCount - 1)
             {
-                 obj = Instantiate(bricks[1]);
+                obj = Instantiate(bricks[1]);
             }
+
             else
             {
-                 obj = Instantiate(bricks[0]);
+                obj = Instantiate(bricks[0]);
             }
             obj.transform.position = new Vector2(spawnpoints[i], 5);
         }
     }
-
     public void MakeRed()
     {
         while (true)
@@ -74,10 +141,34 @@ public class Boss : MonoBehaviour
             }
         }
     }
-
     public void Damage()
     {
-        //대충 데미지 1 맞는 함수 뚝딱뚝딱
         health.curhealth--;
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Wall" && !isjump)
+        {
+            //순간 멈추게 만들기
+            h = 0;
+            Debug.Log("h: 0");
+
+            //스프링발판이면 점프하게 만들기
+            if (other.gameObject.GetComponent<BossPos>().isspring)
+            {
+                Jump();
+            }
+
+            //2초 지연시키기
+            StartCoroutine("Delay", 2f);
+
+            //방향 설정하기
+            h = other.gameObject.GetComponent<BossPos>().posnum;
+            Debug.Log("h:" + h);
+        }
+    }
+    IEnumerator Delay(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 }

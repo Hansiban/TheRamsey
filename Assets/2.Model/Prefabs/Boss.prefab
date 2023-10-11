@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1241340350}
-  m_Layer: 0
-  m_Name: Raystart
+  m_Layer: 2
+  m_Name: hitdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241340349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.43, y: 0.21, z: 0}
+  m_LocalPosition: {x: 0.06, y: -0.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 88032360813373473}
@@ -44,9 +44,10 @@ GameObject:
   - component: {fileID: 88032360813373486}
   - component: {fileID: 1696353650}
   - component: {fileID: 4879826317039601165}
-  m_Layer: 0
+  - component: {fileID: 1993915633}
+  m_Layer: 2
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,6 +64,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1241340350}
+  - {fileID: 2989278205558435529}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -177,7 +179,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -195,7 +197,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbaad27666dfda49922160d03a10cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  speed: 0.2
+  jumpforce: 11
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  hitdownpos: {fileID: 1241340349}
+  hituppos: {fileID: 5377090689420159285}
+  health: {fileID: 0}
   minTrans: -3
   maxTrans: 2
   makeCount: 0
@@ -203,3 +212,54 @@ MonoBehaviour:
   - {fileID: 1847505210327583840, guid: f54fe1741d6eebc41a91197f1016c54b, type: 3}
   - {fileID: 8348642354006949230, guid: 2a721c568a69d804a98a33bdaaaaa3e5, type: 3}
   red: {fileID: 7292427630026791861, guid: 9592d62d6dd3c0846af7d9ce908c5724, type: 3}
+  warning: {fileID: 0}
+--- !u!114 &1993915633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88032360813373485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e6bf49934e1cbb4fbb7899d007c64ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curhealth: 3
+  numOfHearts: 3
+  hearts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fullHeart: {fileID: 21300000, guid: 35cab22e7bbbe1245a4978ad83a66d74, type: 3}
+  emtyHeart: {fileID: 21300000, guid: 8e330f31d12892f4ab1c2fb2672ec7d8, type: 3}
+--- !u!1 &5377090689420159285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2989278205558435529}
+  m_Layer: 2
+  m_Name: hitup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2989278205558435529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5377090689420159285}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.06, y: 0.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 88032360813373473}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

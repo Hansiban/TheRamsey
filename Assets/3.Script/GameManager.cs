@@ -8,13 +8,17 @@ public class GameManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject canvas;
+    public void GotoPetshop()
+    {
+        SceneManager.LoadScene(1);
+    }
     public void GotoAcornVillage()
     {
         SceneManager.LoadScene(2);
     }
-    public void GotoPetshop()
+    public void GotoBoss()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(3);
     }
     private void Awake()
     {

@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class BossTile : MonoBehaviour
 {
     [Header("Damage")]
-    private GameObject boss_; 
+    private GameObject boss_;
     private Boss boss;
 
     [Header("ETC")]
     public bool canDamage;
     private Animator animator;
+    private PlayerControll player;
 
     private void Awake()
     {
@@ -41,6 +41,11 @@ public class BossTile : MonoBehaviour
             {
                 Damage();
             }
+        }
+
+        if (col.gameObject.tag == "Player" && !canDamage)
+        {
+            player.Damage();
         }
     }
 }
