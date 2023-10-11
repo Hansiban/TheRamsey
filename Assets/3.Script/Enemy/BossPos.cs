@@ -6,4 +6,5 @@ public class BossPos : MonoBehaviour
 {
     public int posnum;
     public bool isspring;
+    public bool isreset;
 }

@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss : MonoBehaviour
@@ -13,10 +13,11 @@ public class Boss : MonoBehaviour
     [SerializeField] private BossPos bosspos;
     private Rigidbody2D rigid;
     public int h;
-    private bool isjump;
+    private bool wasjump;
 
     [Header("HP")]
     public Health health;
+    public bool onDie;
 
     [Header("Make")]
     public float minTrans;
@@ -34,7 +35,7 @@ public class Boss : MonoBehaviour
 
     [Header("ETC")]
     [SerializeField] private GameObject warning;
-
+    private Animator ani;
 
     public void Awake()
     {
@@ -48,13 +49,14 @@ public class Boss : MonoBehaviour
         h = 1;
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
+        if (warning || onDie)
+        {
+            return;
+        }
+
         DrawRay();
-        //if (warning || isjump)
-        //{
-        //    return;
-        //}
         Move();
     }
     private void DrawRay()
@@ -67,13 +69,11 @@ public class Boss : MonoBehaviour
 
         if (hitup)
         {
-            Debug.Log("충돌up");
             hitup.collider.isTrigger = true;
         }
 
         if (hitdown)
         {
-            Debug.Log("충돌down");
             hitdown.collider.isTrigger = false;
         }
     }
@@ -87,19 +87,34 @@ public class Boss : MonoBehaviour
                 currentVelocity.x = 0;
                 break;
             case 1: // 오른쪽
-                currentVelocity.x = speed; // 현재 속도에 speed를 더합니다.
+                currentVelocity.x = speed;
                 break;
             case 2: // 왼쪽
-                currentVelocity.x = -speed; // 현재 속도에서 speed를 뺍니다.
+                currentVelocity.x = -speed;
                 break;
         }
         rigid.velocity = currentVelocity;
     }
-    public void Jump()
+    IEnumerator Jump()
     {
-        Debug.Log("Jump");
+        //1초 기다렸다 뛰기
+        yield return new WaitForSeconds(1f);
         rigid.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
-        Invoke("Stomp", 3f);
+
+        if (!wasjump)
+        {
+            Invoke("Stomp", 3f);
+            wasjump = true;
+        }
+        else
+        {
+            Invoke("Fly", 1f);
+        }
+    }
+
+    private void Fly()
+    {
+        transform.position = new Vector2(0, 3);
     }
     public void Stomp()
     {
@@ -125,6 +140,7 @@ public class Boss : MonoBehaviour
             }
             obj.transform.position = new Vector2(spawnpoints[i], 5);
         }
+        StartCoroutine("Jump");
     }
     public void MakeRed()
     {
@@ -145,30 +161,36 @@ public class Boss : MonoBehaviour
     {
         health.curhealth--;
     }
+    public void OnDie()
+    {
+        onDie = true;
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Wall" && !isjump)
+        if (other.tag == "Wall")
         {
             //순간 멈추게 만들기
             h = 0;
             Debug.Log("h: 0");
+            //1초 지연 후 방향설정
+            StartCoroutine("Delay", other);
 
             //스프링발판이면 점프하게 만들기
             if (other.gameObject.GetComponent<BossPos>().isspring)
             {
-                Jump();
+                StartCoroutine("Jump");
             }
-
-            //2초 지연시키기
-            StartCoroutine("Delay", 2f);
-
-            //방향 설정하기
-            h = other.gameObject.GetComponent<BossPos>().posnum;
-            Debug.Log("h:" + h);
+            if (other.gameObject.GetComponent<BossPos>().isreset)
+            {
+                //변수 초기화
+                wasjump = false;
+            }
         }
     }
-    IEnumerator Delay(float time)
+    IEnumerator Delay(Collider2D other)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(1f);
+        h = other.gameObject.GetComponent<BossPos>().posnum;
+        Debug.Log("h:" + h);
     }
 }

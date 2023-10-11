@@ -179,7 +179,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -197,16 +197,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbaad27666dfda49922160d03a10cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.2
-  jumpforce: 11
+  speed: 2
+  jumpforce: 8
   layerMask:
     serializedVersion: 2
     m_Bits: 256
   hitdownpos: {fileID: 1241340349}
   hituppos: {fileID: 5377090689420159285}
+  bosspos: {fileID: 0}
+  h: 0
   health: {fileID: 0}
-  minTrans: -3
-  maxTrans: 2
+  minTrans: -1.6
+  maxTrans: 3
   makeCount: 0
   bricks:
   - {fileID: 1847505210327583840, guid: f54fe1741d6eebc41a91197f1016c54b, type: 3}
