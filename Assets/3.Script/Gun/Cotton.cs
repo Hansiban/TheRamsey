@@ -58,7 +58,7 @@ public class Cotton : MonoBehaviour
         if (other.tag == "Player")
         {
             bulletanimation.SetBool("Remove", true);
-            playerControll.Jump(1.3f);
+            playerControll.Jump(1.5f);
         }
     }
 }

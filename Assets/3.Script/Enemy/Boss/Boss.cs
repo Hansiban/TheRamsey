@@ -11,6 +11,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject hitdownpos;
     [SerializeField] private GameObject hituppos;
     [SerializeField] private BossPos bosspos;
+    private Collider2D col;
     private Rigidbody2D rigid;
     public int h;
     private bool wasjump;
@@ -18,6 +19,7 @@ public class Boss : MonoBehaviour
     [Header("HP")]
     public Health health;
     public bool onDie;
+    [SerializeField] private GameObject howto;
 
     [Header("Make")]
     public float minTrans;
@@ -41,6 +43,8 @@ public class Boss : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         health = GetComponent<Health>();
+        ani = GetComponent<Animator>();
+        col = GetComponent<Collider2D>();
     }
     public void Start()
     {
@@ -48,24 +52,26 @@ public class Boss : MonoBehaviour
         makeCount = 4;
         h = 1;
     }
-
     public void FixedUpdate()
     {
         if (warning || onDie)
         {
             return;
         }
-
-        DrawRay();
+        if (health.curhealth == 0 && !onDie)
+        {
+            OnDie();
+        }
         Move();
+        DrawRay();
     }
     private void DrawRay()
     {
-        RaycastHit2D hitup = Physics2D.Raycast(hituppos.transform.position, Vector2.up, 0.5f, layerMask);
-        RaycastHit2D hitdown = Physics2D.Raycast(hitdownpos.transform.position, Vector2.down, 0.5f, layerMask);
+        RaycastHit2D hitup = Physics2D.Raycast(hituppos.transform.position, Vector2.up, 10f, layerMask);
+        RaycastHit2D hitdown = Physics2D.Raycast(hitdownpos.transform.position, Vector2.down, 10f, layerMask);
 
-        Debug.DrawRay(hituppos.transform.position, Vector2.up, Color.red, 0.5f);
-        Debug.DrawRay(hitdownpos.transform.position, Vector2.down, Color.blue, 0.5f);
+        Debug.DrawRay(hituppos.transform.position, Vector2.up, Color.red, 10f);
+        Debug.DrawRay(hitdownpos.transform.position, Vector2.down, Color.blue, 10f);
 
         if (hitup)
         {
@@ -85,12 +91,15 @@ public class Boss : MonoBehaviour
         {
             case 0: // 가만히있기
                 currentVelocity.x = 0;
+                ani.SetBool("Run", false);
                 break;
             case 1: // 오른쪽
                 currentVelocity.x = speed;
+                ani.SetBool("Run", true);
                 break;
             case 2: // 왼쪽
                 currentVelocity.x = -speed;
+                ani.SetBool("Run", true);
                 break;
         }
         rigid.velocity = currentVelocity;
@@ -100,18 +109,19 @@ public class Boss : MonoBehaviour
         //1초 기다렸다 뛰기
         yield return new WaitForSeconds(1f);
         rigid.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
+        ani.SetBool("isJump", true);
 
         if (!wasjump)
         {
             Invoke("Stomp", 3f);
             wasjump = true;
         }
+
         else
         {
             Invoke("Fly", 1f);
         }
     }
-
     private void Fly()
     {
         transform.position = new Vector2(0, 3);
@@ -140,7 +150,7 @@ public class Boss : MonoBehaviour
             }
             obj.transform.position = new Vector2(spawnpoints[i], 5);
         }
-        StartCoroutine("Jump");
+        StartCoroutine(Jump());
     }
     public void MakeRed()
     {
@@ -160,10 +170,17 @@ public class Boss : MonoBehaviour
     public void Damage()
     {
         health.curhealth--;
+        if (howto)
+        {
+            Destroy(howto);
+        }
     }
     public void OnDie()
     {
         onDie = true;
+        ani.SetBool("Dead", true);
+        rigid.AddForce(Vector2.up * jumpforce / 2, ForceMode2D.Impulse);
+        col.isTrigger = true;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -172,6 +189,7 @@ public class Boss : MonoBehaviour
             //순간 멈추게 만들기
             h = 0;
             Debug.Log("h: 0");
+
             //1초 지연 후 방향설정
             StartCoroutine("Delay", other);
 
@@ -185,6 +203,13 @@ public class Boss : MonoBehaviour
                 //변수 초기화
                 wasjump = false;
             }
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Obstacle")
+        {
+            ani.SetBool("isJump", false);
         }
     }
     IEnumerator Delay(Collider2D other)
