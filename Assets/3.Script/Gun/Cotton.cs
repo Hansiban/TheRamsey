@@ -5,6 +5,7 @@ public class Cotton : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float destroy = 5;
     [SerializeField] private GameObject trail;
+    [SerializeField] private AudioSource music;
     private GameObject player;
     private PlayerControll playerControll;
     private Animator bulletanimation;
@@ -16,6 +17,7 @@ public class Cotton : MonoBehaviour
         bulletanimation = GetComponentInChildren<Animator>();
         player = GameObject.FindWithTag("Player");
         playerControll = player.GetComponent<PlayerControll>();
+        music = GetComponent<AudioSource>();
     }
     private void Start()
     {
@@ -58,6 +60,7 @@ public class Cotton : MonoBehaviour
         if (other.tag == "Player")
         {
             bulletanimation.SetBool("Remove", true);
+            music.Play();
             playerControll.Jump(1.5f);
         }
     }

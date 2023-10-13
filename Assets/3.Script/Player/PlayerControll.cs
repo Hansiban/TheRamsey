@@ -15,10 +15,14 @@ public class PlayerControll : MonoBehaviour
     private bool onDie;
 
     [Header("Animation")]
-    private PlayerEffect playerEffect;
+
     public bool haveGun;
     private Animator animator;
     private Collider2D col;
+    [SerializeField] AudioClip[] soundSorces;
+    private AudioSource effect;
+    //jump
+    //cotton
 
     [Header("Bullet")]
     private Transform bulletSpawnPoint;
@@ -29,9 +33,6 @@ public class PlayerControll : MonoBehaviour
     [Header("Boss")]
     [SerializeField] private LayerMask layer;
     [SerializeField] private BossTile bossTile;
-
-    [Header("Potal")]
-    [SerializeField] private GameManager gameManager;
 
     private void Awake()
     {
@@ -86,9 +87,11 @@ public class PlayerControll : MonoBehaviour
         }
 
         //총알 만들기
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && haveGun)
         {
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            effect.clip = soundSorces[1];
+            effect.Play();
             //trail.Make();
         }
     }
@@ -116,10 +119,15 @@ public class PlayerControll : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(transform.position.x, 0);
             _rigidbody.AddForce(Vector2.down * jumpforce, ForceMode2D.Impulse);
+            effect.clip = soundSorces[0];
+            effect.Play();
+
         }
         else
         {
             _rigidbody.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
+            effect.clip = soundSorces[0];
+            effect.Play();
         }
         isGrounded = false;
 
@@ -131,6 +139,8 @@ public class PlayerControll : MonoBehaviour
         //Jump
         _rigidbody.velocity = new Vector2(transform.position.x, 0);
         _rigidbody.AddForce(Vector2.up * jumpforce * jump, ForceMode2D.Impulse);
+        effect.clip = soundSorces[0];
+        effect.Play();
         isGrounded = false;
 
         //Ani
@@ -152,7 +162,7 @@ public class PlayerControll : MonoBehaviour
 
     private void DrawCircle()
     {
-        Collider2D obj = Physics2D.OverlapCircle(transform.position, 0.2f, layer);
+        Collider2D obj = Physics2D.OverlapCircle(transform.position, 0.3f, layer);
         if (obj)
         {
             bossTile = obj.gameObject.GetComponent<BossTile>();
@@ -200,12 +210,14 @@ public class PlayerControll : MonoBehaviour
     {
         if (other.gameObject.name == "J")
         {
-            gameManager.GotoAcornVillage();
+            GameManager.Instance.GotoAcornVillage();
+            haveGun = true;
         }
 
         else if (other.gameObject.name == "B")
         {
-            gameManager.GotoBoss();
+            GameManager.Instance.GotoBoss();
+            haveGun = false;
         }
     }
 
@@ -215,11 +227,5 @@ public class PlayerControll : MonoBehaviour
         animator.SetTrigger("Dead");
         _rigidbody.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
         col.isTrigger = true;
-    }
-
-    private void HaveGun()
-    {
-        haveGun = true;
-        //총 아이템 만들어 연동하기 1009
     }
 }

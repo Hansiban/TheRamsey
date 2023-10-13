@@ -12,14 +12,12 @@ public class Health : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emtyHeart;
 
-    private void Start()
-    {
-        //변수 초기화
-        //curhealth = 3; //현재체력
-        //numOfHearts = 3; //최대체력
-    }
     private void Update()
     {
+        if (curhealth == 0)
+        {
+            GameEnd();
+        }
         //예외처리 - 현재체력> 최대체력일시 같게
         if (curhealth > numOfHearts)
         {
@@ -44,6 +42,18 @@ public class Health : MonoBehaviour
             {
                 hearts[i].enabled = false; //비활성화
             }
+        }
+    }
+    private void GameEnd()
+    {
+        if (gameObject.CompareTag("Player"))
+        {
+            GameManager.Instance.GameOver();
+        }
+
+        else if (gameObject.CompareTag("Enemy"))
+        {
+            GameManager.Instance.Invoke("GameClear", 4f);
         }
     }
 }

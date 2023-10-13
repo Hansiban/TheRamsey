@@ -17,7 +17,6 @@ public class Camera : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         cine.LookAt = player.transform;
         cine.Follow = player.transform;
-        //backGround = GameObject.FindGameObjectWithTag("BackGround");
     }
     private void Update()
     {

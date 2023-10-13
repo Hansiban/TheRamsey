@@ -50,6 +50,7 @@ MonoBehaviour:
   speed: 2
   destroy: 10
   trail: {fileID: 1158212610247751424}
+  music: {fileID: 8300000, guid: 2a94fb6624239684a8be37138984675d, type: 3}
 --- !u!50 &7902907883454581376
 Rigidbody2D:
   serializedVersion: 4
@@ -173,6 +174,10 @@ PrefabInstance:
     - target: {fileID: 8129618717725432911, guid: 72d90faa8de35ad44af9acf78d0dde18, type: 3}
       propertyPath: m_Name
       value: sprTrailCotton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8129618717725432911, guid: 72d90faa8de35ad44af9acf78d0dde18, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8695903685453059163, guid: 72d90faa8de35ad44af9acf78d0dde18, type: 3}
       propertyPath: m_RootOrder

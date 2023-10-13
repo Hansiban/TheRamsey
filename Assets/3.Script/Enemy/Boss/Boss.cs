@@ -38,6 +38,7 @@ public class Boss : MonoBehaviour
     [Header("ETC")]
     [SerializeField] private GameObject warning;
     private Animator ani;
+    private SpriteRenderer sprite;
 
     public void Awake()
     {
@@ -45,6 +46,7 @@ public class Boss : MonoBehaviour
         health = GetComponent<Health>();
         ani = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
     public void Start()
     {
@@ -95,11 +97,13 @@ public class Boss : MonoBehaviour
                 break;
             case 1: // ¿À¸¥ÂÊ
                 currentVelocity.x = speed;
+                sprite.flipX = false;
                 ani.SetBool("Run", true);
                 break;
             case 2: // ¿ÞÂÊ
                 currentVelocity.x = -speed;
                 ani.SetBool("Run", true);
+                sprite.flipX = true;
                 break;
         }
         rigid.velocity = currentVelocity;

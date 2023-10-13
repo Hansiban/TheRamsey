@@ -29,7 +29,7 @@ public class BossTile : MonoBehaviour
 
     public void Attack()
     {
-        if (canDamage)
+        if (canDamage)   
         {
             Debug.Log("어택 실행");
             rigid.AddForce(Vector2.up * attackforce, ForceMode2D.Impulse);
