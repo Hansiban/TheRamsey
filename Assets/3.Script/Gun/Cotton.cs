@@ -5,19 +5,21 @@ public class Cotton : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float destroy = 5;
     [SerializeField] private GameObject trail;
-    [SerializeField] private AudioSource music;
     private GameObject player;
     private PlayerControll playerControll;
     private Animator bulletanimation;
     private bool isMove = true;
     private float h;
+    [SerializeField] AudioClip[] sounds;
+    //[0]=pop/[1] = touch
+    private AudioSource sound;
 
     private void Awake()
     {
         bulletanimation = GetComponentInChildren<Animator>();
         player = GameObject.FindWithTag("Player");
         playerControll = player.GetComponent<PlayerControll>();
-        music = GetComponent<AudioSource>();
+        sound = GetComponent<AudioSource>();
     }
     private void Start()
     {
@@ -55,13 +57,20 @@ public class Cotton : MonoBehaviour
             bulletanimation.SetTrigger("Bloom");
             trail.SetActive(false);
             bulletanimation.SetBool("Keep", true);
+
+            //sound
+            sound.clip = sounds[0];
+            sound.Play();
         }
 
         if (other.tag == "Player")
         {
             bulletanimation.SetBool("Remove", true);
-            music.Play();
             playerControll.Jump(1.5f);
+
+            //sound
+            sound.clip = sounds[1];
+            sound.Play();
         }
     }
 }

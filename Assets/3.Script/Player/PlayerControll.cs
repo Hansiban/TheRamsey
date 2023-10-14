@@ -19,10 +19,8 @@ public class PlayerControll : MonoBehaviour
     public bool haveGun;
     private Animator animator;
     private Collider2D col;
-    [SerializeField] AudioClip[] soundSorces;
-    private AudioSource effect;
-    //jump
-    //cotton
+    [SerializeField] AudioClip[] sounds;
+    private AudioSource sound;
 
     [Header("Bullet")]
     private Transform bulletSpawnPoint;
@@ -42,6 +40,7 @@ public class PlayerControll : MonoBehaviour
         animator = GetComponent<Animator>();
         healthManager = GetComponent<Health>();
         trail = GetComponentInChildren<Trail>();
+        sound = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -90,9 +89,10 @@ public class PlayerControll : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z) && haveGun)
         {
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-            effect.clip = soundSorces[1];
-            effect.Play();
-            //trail.Make();
+            
+            //sound
+            sound.clip = sounds[1];
+            sound.Play();
         }
     }
 
@@ -119,32 +119,31 @@ public class PlayerControll : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(transform.position.x, 0);
             _rigidbody.AddForce(Vector2.down * jumpforce, ForceMode2D.Impulse);
-            effect.clip = soundSorces[0];
-            effect.Play();
 
         }
         else
         {
             _rigidbody.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
-            effect.clip = soundSorces[0];
-            effect.Play();
         }
         isGrounded = false;
 
         //Ani
         animator.SetBool("isJump", true);
+
+        //sound
+        sound.clip = sounds[0];
+        sound.Play();
     }
     public void Jump(float jump)
     {
         //Jump
         _rigidbody.velocity = new Vector2(transform.position.x, 0);
         _rigidbody.AddForce(Vector2.up * jumpforce * jump, ForceMode2D.Impulse);
-        effect.clip = soundSorces[0];
-        effect.Play();
         isGrounded = false;
 
         //Ani
         animator.SetBool("isJump", true);
+
     }
 
     private void Ani()

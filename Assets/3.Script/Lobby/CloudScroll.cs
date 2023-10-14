@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CloudMoving : MonoBehaviour
+public class CloudScroll : MonoBehaviour
 {
     [SerializeField] int speed;
     private RectTransform rectTransform;

@@ -22,8 +22,8 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject howto;
 
     [Header("Make")]
-    public float minTrans;
-    public float maxTrans;
+    public int minTrans;
+    public int maxTrans;
     public int makeCount;
 
     [Header("brick")]
@@ -39,6 +39,9 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject warning;
     private Animator ani;
     private SpriteRenderer sprite;
+    private AudioSource sound;
+    [SerializeField] AudioClip[] sounds;
+    // [0]redmake,[1]block,[2]die
 
     public void Awake()
     {
@@ -47,6 +50,7 @@ public class Boss : MonoBehaviour
         ani = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
         sprite = GetComponent<SpriteRenderer>();
+        sound = GetComponent<AudioSource>();
     }
     public void Start()
     {
@@ -136,6 +140,8 @@ public class Boss : MonoBehaviour
         {
             MakeRed();
         }
+        sound.clip = sounds[0];
+        sound.Play();
         Invoke("Makebrick", 1.5f);
     }
     public void Makebrick()
@@ -154,6 +160,7 @@ public class Boss : MonoBehaviour
             }
             obj.transform.position = new Vector2(spawnpoints[i], 5);
         }
+        spawnpoints.Clear();
         StartCoroutine(Jump());
     }
     public void MakeRed()

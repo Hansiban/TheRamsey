@@ -1058,7 +1058,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 367722845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c14863b9ba90ee4595639091fc43d94, type: 3}
+  m_Script: {fileID: 11500000, guid: 40afbc7004506954a9c9eda466520b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
@@ -1660,7 +1660,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3086,7 +3086,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1063731374}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c14863b9ba90ee4595639091fc43d94, type: 3}
+  m_Script: {fileID: 11500000, guid: 40afbc7004506954a9c9eda466520b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100

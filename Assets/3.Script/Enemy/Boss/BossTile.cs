@@ -2,7 +2,6 @@ using UnityEngine;
 public class BossTile : MonoBehaviour
 {
     [Header("Damage")]
-
     //[SerializeField] Boss boss;
     private Boss boss;
     private Rigidbody2D rigid;
@@ -12,6 +11,7 @@ public class BossTile : MonoBehaviour
     public bool canDamage; //특수블럭 여부 확인
     private Animator animator;
     private PlayerControll player;
+    [SerializeField]private AudioSource sound;
 
     private void Awake()
     {
@@ -19,12 +19,14 @@ public class BossTile : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControll>();
         boss = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Boss>();
+        sound = GetComponent<AudioSource>();
     }
 
     private void Damage()
     {
         boss.Damage();
         animator.SetBool("destroy", true);
+        sound.Play();
     }
 
     public void Attack()
@@ -49,13 +51,15 @@ public class BossTile : MonoBehaviour
             else if (col.gameObject.CompareTag("Player"))
             {
                 player.Damage();
+                sound.Play();
             }
         }
 
-        //특수 블럭 : 적에게 데미지, 땅에닿으면 삭제
+        //특수 블럭 : 적에게 데미지
         else if (col.gameObject.CompareTag("Enemy"))
         {
             Damage();
+            sound.Play();
         }
     }
 }
