@@ -195,7 +195,7 @@ public class Boss : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Wall")
+        if (other.CompareTag("Wall"))
         {
             //순간 멈추게 만들기
             h = 0;

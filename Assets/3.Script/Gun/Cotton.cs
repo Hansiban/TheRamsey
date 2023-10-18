@@ -63,7 +63,7 @@ public class Cotton : MonoBehaviour
             sound.Play();
         }
 
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             bulletanimation.SetBool("Remove", true);
             playerControll.Jump(1.5f);

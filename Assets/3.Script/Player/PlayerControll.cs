@@ -119,7 +119,6 @@ public class PlayerControll : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(transform.position.x, 0);
             _rigidbody.AddForce(Vector2.down * jumpforce, ForceMode2D.Impulse);
-
         }
         else
         {
@@ -143,7 +142,6 @@ public class PlayerControll : MonoBehaviour
 
         //Ani
         animator.SetBool("isJump", true);
-
     }
 
     private void Ani()
